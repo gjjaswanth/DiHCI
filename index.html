@@ -183,6 +183,129 @@
       text-align:center;
     }
 
+
+    /* Unique week-wise practice card */
+    .unique-card{
+      grid-column:1 / -1;
+      position:relative;
+      overflow:hidden;
+      border:0;
+      color:#111827;
+      isolation:isolate;
+      background:linear-gradient(
+        120deg,
+        #ff1744,
+        #ff9100,
+        #ffe600,
+        #00e676,
+        #00b0ff,
+        #7c4dff,
+        #e91e63,
+        #ff1744
+      );
+      background-size:500% 500%;
+      animation:uniqueRainbow 8s ease infinite;
+      padding:24px 22px 22px;
+    }
+
+    .unique-card::before{
+      content:"";
+      position:absolute;
+      inset:7px;
+      border-radius:14px;
+      background:rgba(255,255,255,.96);
+      z-index:-1;
+    }
+
+    .unique-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:18px;
+      padding:7px;
+      background:linear-gradient(
+        120deg,
+        #ff1744,
+        #ff9100,
+        #ffe600,
+        #00e676,
+        #00b0ff,
+        #7c4dff,
+        #e91e63,
+        #ff1744
+      );
+      background-size:500% 500%;
+      animation:uniqueRainbow 8s ease infinite reverse;
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    .unique-card .unique-badge{
+      display:inline-flex;
+      align-self:flex-start;
+      margin-bottom:14px;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.04em;
+      color:#111827;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(17,24,39,.08);
+    }
+
+    .unique-card .unique-title{
+      font-size:25px;
+      line-height:1.3;
+      margin:0 0 10px;
+      font-weight:800;
+      color:#111827;
+    }
+
+    .unique-card .unique-desc{
+      margin:0 0 14px;
+      color:#4b5563;
+      line-height:1.65;
+      font-size:14px;
+      max-width:900px;
+    }
+
+    .unique-card .unique-meta{
+      margin:0 0 18px;
+      font-size:13px;
+      color:#111827;
+      font-weight:800;
+    }
+
+    .unique-card .unique-btn{
+      background:#111827;
+      color:#fff;
+    }
+
+    .unique-card .unique-btn:hover{
+      opacity:.92;
+      transform:translateY(-1px);
+    }
+
+    @keyframes uniqueRainbow{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    @media(max-width:900px){
+      .unique-card{grid-column:1 / -1;}
+    }
+
+    @media(max-width:640px){
+      .unique-card{grid-column:1;}
+    }
+
     /* Tablet */
     @media(max-width:900px){
 
@@ -323,6 +446,34 @@
 
       </div>
 
+
+
+
+      <!-- Unique week-wise practice -->
+      <div class="card unique-card">
+        <div class="unique-badge">
+          UNIQUE PRACTICE SET
+        </div>
+
+        <div class="unique-title">
+          Week-wise Unique Question Practice
+        </div>
+
+        <p class="unique-desc">
+          One combined practice set built from the 2022, 2025, and 2026
+          assignments. Repeated questions are merged, while distinct
+          questions are retained week-wise.
+        </p>
+
+        <div class="unique-meta">
+          143 unique questions • Weeks 1–12
+        </div>
+
+        <a class="btn unique-btn"
+           href="./dihci-unique-weekwise-practice.html">
+          Open Unique Practice
+        </a>
+      </div>
 
     </div>
 
