@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiHCI Unique Week-wise Practice</title>
+<style>
+:root{
+  --bg:#f4f6f8;--card:#fff;--text:#111827;--muted:#6b7280;
+  --border:#e5e7eb;--shadow:0 8px 24px rgba(0,0,0,.06);
+  --green:#118a3a;--red:#c0262d;--accent:#111827;
+  --soft:#eef2ff;--softText:#3730a3;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 18px 48px}
+header{text-align:center;padding:10px 0 22px}
+h1{margin:0 0 10px;font-size:clamp(30px,4vw,50px);line-height:1.08;color:#000;font-weight:800}
+.subtitle{margin:0 auto;max-width:900px;font-size:15px;color:var(--muted);line-height:1.6}
+.week-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0 18px}
+.week-btn{border:1px solid var(--border);background:#fff;color:#374151;border-radius:999px;padding:9px 13px;font-size:13px;font-weight:800;cursor:pointer}
+.week-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+button.action{border:0;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:800;cursor:pointer}
+.primary{background:var(--accent);color:#fff}.secondary{background:#e5e7eb;color:#374151}
+.meta{text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px}
+form{display:grid;gap:16px}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:20px}
+.qtop{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+.qtitle{font-size:17px;line-height:1.55;margin:0;font-weight:600}
+.badges{display:flex;gap:7px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end}
+.badge{background:var(--soft);color:var(--softText);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
+.source-badge{background:#f3f4f6;color:#4b5563}
+.options{display:grid;gap:9px}
+label.opt{display:flex;gap:10px;align-items:flex-start;line-height:1.45;font-size:15px;cursor:pointer}
+label.opt input{margin-top:4px}
+.text-answer{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:15px}
+.result{margin-top:12px;font-size:14px;font-weight:800;min-height:20px}
+.correct{color:var(--green)}.wrong{color:var(--red)}
+.scorebox{margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:18px;text-align:center;font-size:18px;font-weight:800}
+.scoredetails{display:block;margin-top:8px;color:var(--muted);font-size:14px}
+.sticky-submit{position:sticky;bottom:14px;z-index:3;display:flex;justify-content:center;margin-top:18px}
+.sticky-submit button{box-shadow:0 10px 24px rgba(0,0,0,.14)}
+.note{margin-top:7px;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:640px){
+  .question-card{padding:16px}.qtitle{font-size:16px}
+  .badges{width:100%;justify-content:flex-start}.qtop{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>DiHCI Unique Question Practice</h1>
+  <p class="subtitle">Week-wise unique questions combined from the 2022, 2025, and 2026 assignment sets. Duplicate questions are merged while distinct questions are retained.</p>
+</header>
+
+<div class="week-bar" id="weekBar"></div>
+
+<div class="toolbar">
+  <button class="action primary" type="button" onclick="submitQuiz()">Submit</button>
+  <button class="action secondary" type="button" onclick="resetQuiz()">Reset</button>
+</div>
+
+<div class="meta" id="metaLine"></div>
+<form id="quizForm"></form>
+
+<div class="sticky-submit">
+  <button class="action primary" type="button" onclick="submitQuiz()">Submit</button>
+</div>
+
+<div class="scorebox" id="scoreBox">Select a week and submit the quiz to see your score.</div>
+</div>
+
+<script>
+const quizData = [{"week": 1, "q": "While we talk about the evaluation phases of the computer, _______ is called the modern age of computers.", "type": "single", "options": ["1985 onwards", "1998 onwards", "2007 onwards", "2011 onwards"], "answer": "2011 onwards", "source_years": ["2022", "2025"]}, {"week": 1, "q": "Which among the following is NOT a generic category of users?", "options": ["Novice", "Super knowledgeable", "Intermittent", "Expert"], "answer": "Super knowledgeable", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "In the Spiral Model, why is the second quadrant crucial for interactive software development?", "options": ["It defines the UI layout", "It finalizes the system architecture", "It identifies and mitigates usability risks via prototyping", "It handles testing and deployment"], "answer": "It identifies and mitigates usability risks via prototyping", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "What does the term 'utility' refer to in the context of usability?", "options": ["Speed of task completion", "Visual appeal of the design", "Functional support for user needs", "Frequency of feature updates"], "answer": "Functional support for user needs", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "Which one of the following is NOT a computer?", "options": ["Desktop", "Digital Pedometer", "Smartphone", "None of the above"], "answer": "None of the above", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "Interactive software development is _______ in nature.", "type": "single", "options": ["sporadic", "iterative", "variable", "discrete"], "answer": "iterative", "source_years": ["2022", "2025"]}, {"week": 1, "q": "Which of the following is NOT one of the five quality components of usability proposed by Jacob Nielsen?", "options": ["Learnability", "Efficiency", "Satisfaction", "Memorization"], "answer": "Memorization", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "Which of the following is NOT a characteristic of the Waterfall model?", "options": ["Feasibility study", "Learnability study", "System integration and testing", "Maintenance"], "answer": "Learnability study", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "'Identify objectives' and 'customer evaluation and planning' is in the ______ and ______ quadrant of the spiral model respectively.", "options": ["First, Fourth", "Second, Third", "Third, Fourth", "Fourth, Second"], "answer": "First, Fourth", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "Which design approach focuses on what a programmer finds interesting to build?", "options": ["System-Centered Design", "User-Centered Design", "Utility-Based Design", "Participatory Design"], "answer": "System-Centered Design", "source_years": ["2022", "2025", "2026"]}, {"week": 1, "q": "While we talk about the evaluation phases of the computer, ______ is called the modern age of computers.", "options": ["1985 onwards", "1998 onwards", "2007 onwards", "2011 onwards"], "answer": "2011 onwards", "source_years": ["2026"]}, {"week": 1, "q": "Interactive software development is ______ in nature.", "options": ["sporadic", "iterative", "variable", "discrete"], "answer": "iterative", "source_years": ["2026"]}, {"week": 2, "q": "Contextual inquiry is also known as _______.", "type": "single", "options": ["Interview", "Observation", "Semi-structured interview"], "answer": "Semi-structured interview", "source_years": ["2022", "2025"]}, {"week": 2, "q": "In SRS, functions are not represented as", "options": ["Function name", "Input", "Output", "Description", "Motivation"], "answer": "Motivation", "source_years": ["2022", "2025", "2026"]}, {"week": 2, "q": "Contextual inquiry can be done in _______ and passive mode.", "type": "single", "options": ["active", "semi-active", "neutral"], "answer": "active", "source_years": ["2022", "2025"]}, {"week": 2, "q": "There are _______ stages in contextual inquiry.", "type": "single", "options": ["two", "five", "six", "eight"], "answer": "five", "source_years": ["2022", "2025"]}, {"week": 2, "q": "Which stage in the Contextual Inquiry process involves arranging for recording observations and scripting the procedure?", "options": ["Plan Stage", "Initiate Stage", "Execute Stage", "Reflect Stage"], "answer": "Plan Stage", "source_years": ["2022", "2025", "2026"]}, {"week": 2, "q": "Affinity diagram method consists of _______ steps.", "type": "single", "options": ["Three", "Two", "Six", "Five"], "answer": "Five", "source_years": ["2022", "2025"]}, {"week": 2, "q": "Usability requirements is one type of ______.", "options": ["Functional Requirement", "Non-functional requirement"], "answer": "Non-functional requirement", "source_years": ["2022", "2025", "2026"]}, {"week": 2, "q": "What is the primary objective of Contextual Inquiry?", "options": ["To watch and observe users perform tasks in their natural work setting", "To conduct semi-structured interviews with users", "To develop design recommendations", "To study user behavior using physical note-taking"], "answer": "To watch and observe users perform tasks in their natural work setting", "source_years": ["2022", "2025", "2026"]}, {"week": 2, "q": "What is the purpose of the \"Reflect\" stage in the Contextual Inquiry process?", "type": "single", "options": ["To contact the authorities for permission", "To analyze the data collected and identify design goals", "To script the procedure and rehearse for observations"], "answer": "To analyze the data collected and identify design goals", "source_years": ["2022", "2025"]}, {"week": 2, "q": "How long does the Contextual Inquiry process typically continue?", "options": ["One to two weeks", "One to two hours", "One to two months"], "answer": "One to two hours", "source_years": ["2022", "2025", "2026"]}, {"week": 2, "q": "Contextual inquiry is also known as ________.", "options": ["Interview", "Observation", "Semi-structured interview"], "answer": "Semi-structured interview", "source_years": ["2026"]}, {"week": 2, "q": "Contextual inquiry can be done in ______ and passive mode.", "options": ["active", "semi-active", "neutral"], "answer": "active", "source_years": ["2026"]}, {"week": 2, "q": "There are ______ stages in contextual inquiry.", "options": ["two", "five", "six", "eight"], "answer": "five", "source_years": ["2026"]}, {"week": 2, "q": "Affinity diagram method consists of ______ steps.", "options": ["Three", "Two", "Six", "Five"], "answer": "Five", "source_years": ["2026"]}, {"week": 2, "q": "What is the purpose of the 'Reflect' stage in the Contextual Inquiry process?", "options": ["To contact the authorities for permission", "To analyze the data collected and identify design goals", "To script the procedure and rehearse for observations"], "answer": "To analyze the data collected and identify design goals", "source_years": ["2026"]}, {"week": 3, "q": "In SRS document the functions should describe HOW to get the output from the given input.", "options": ["True", "False"], "answer": "False", "source_years": ["2022", "2025", "2026"]}, {"week": 3, "q": "We can also add new functional requirements based on the observations made in contextual inquiry.", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025", "2026"]}, {"week": 3, "q": "In user-centered design, we have two concerns: Interface design and __________.", "type": "single", "options": ["Machine design", "Hardware design", "Code design", "System design"], "answer": "Code design", "source_years": ["2022", "2025"]}, {"week": 3, "q": "The design-prototype-evaluate cycle primarily caters to ______ design.", "options": ["Interface", "Code", "System"], "answer": "Interface", "source_years": ["2022", "2025", "2026"]}, {"week": 3, "q": "Code design can be expressed in natural languages, semi-formal languages and _________.", "type": "single", "options": ["Informal languages", "Formal languages", "Context sensitive languages"], "answer": "Formal languages", "source_years": ["2022", "2025"]}, {"week": 3, "q": "DFD is a _______ code design language.", "type": "single", "options": ["Natural", "Semi-formal", "Informal", "Context sensitive"], "answer": "Semi-formal", "source_years": ["2022", "2025"]}, {"week": 3, "q": "Shneiderman proposed _____ rules that covers broad aspects of interactive systems.", "type": "single", "options": ["Five", "Seven", "Eight", "Nine"], "answer": "Eight", "source_years": ["2022", "2025"]}, {"week": 3, "q": "“The interface should not force users to remember too many things” – this statement falls under “_______”, one of the golden rules proposed by Shneiderman.", "type": "single", "options": ["Strive for consistency", "Permit easy reversal of actions", "Reduce short-term memory load", "Keep users in control"], "answer": "Reduce short-term memory load", "source_years": ["2022", "2025"]}, {"week": 3, "q": "Human interface guidelines for the Apple systems are the ________ design guidelines.", "options": ["Generic", "Specific"], "answer": "Specific", "source_years": ["2022", "2025", "2026"]}, {"week": 3, "q": "Identification of data structures and algorithms for different modules is done on the ____________ phase of code design.", "type": "single", "options": ["Preliminary (high-level design)", "Detailed design"], "answer": "Detailed design", "source_years": ["2022", "2025"]}, {"week": 3, "q": "In user-centered design, we have two concerns: Interface design and", "options": ["Machine design", "Hardware design", "Code design", "System design"], "answer": "Code design", "source_years": ["2026"]}, {"week": 3, "q": "Code design can be expressed in natural languages, semi-formal languages and ________.", "options": ["Informal languages", "Formal languages", "Context sensitive languages"], "answer": "Formal languages", "source_years": ["2026"]}, {"week": 3, "q": "DFD is a ______ code design language.", "options": ["Natural", "Semi-formal", "Informal", "Context sensitive"], "answer": "Semi-formal", "source_years": ["2026"]}, {"week": 3, "q": "Shneiderman proposed ______ rules that covers broad aspects of interactive systems.", "options": ["Five", "Seven", "Eight", "Nine"], "answer": "Eight", "source_years": ["2026"]}, {"week": 3, "q": "'The interface should not force users to remember too many things' — this statement falls under '__________', one of the golden rules proposed by Ben Shneiderman.", "options": ["Strive for consistency", "Permit easy reversal of actions", "Reduce short-term memory load", "Keep users in control"], "answer": "Reduce short-term memory load", "source_years": ["2026"]}, {"week": 3, "q": "Identification of data structures and algorithms for different modules is done on the ________ phase of code design.", "options": ["Preliminary (high-level design)", "Detailed design"], "answer": "Detailed design", "source_years": ["2026"]}, {"week": 4, "q": "Norman’s Model of Interaction represents behavior of a user of interactive systems in terms of a series of _________.", "type": "single", "options": ["actions", "selection", "manipulation"], "answer": "actions", "source_years": ["2022", "2025"]}, {"week": 4, "q": "The eight golden rules for interface design were proposed by Ben Shneiderman in the year ______ (fill in the blank with the correct year in the format yyyy).", "type": "text", "answer": "1986", "source_years": ["2022", "2025"]}, {"week": 4, "q": "One of the eight golden rules of Shneiderman is “strive for consistency”. It actually refers to", "type": "single", "options": ["Both the “internal” and “external” consistency", "Only external consistency", "Only internal consistency", "None of the above"], "answer": "Both the “internal” and “external” consistency", "source_years": ["2022", "2025"]}, {"week": 4, "q": "There are broadly two stages of interaction execution stage and ________ stage.", "type": "single", "options": ["design", "evaluation", "interaction"], "answer": "evaluation", "source_years": ["2022", "2025"]}, {"week": 4, "q": "Perceive system state comes under the _______ stage of interaction.", "type": "single", "options": ["execution", "design", "evaluation", "interaction"], "answer": "evaluation", "source_years": ["2022", "2025"]}, {"week": 4, "q": "Actions we specify to translate intentions may not be supported by the interface leading to gap(gulf) between the first three and the last actions in the execution stage- It is called _______.", "type": "single", "options": ["The gulf of execution", "The gulf of evaluation", "The gulf of Interaction"], "answer": "The gulf of execution", "source_years": ["2022", "2025"]}, {"week": 4, "q": "Particularly in the context of errors during interaction is explained in terms of slips and ______.", "options": ["error", "mistakes", "human error"], "answer": "mistakes", "source_years": ["2022", "2025", "2026"]}, {"week": 4, "q": "Paper mock-ups are the example of __________ prototype.", "type": "single", "options": ["Low fidelity", "High fidelity", "Medium fidelity"], "answer": "Low fidelity", "source_years": ["2022", "2025"]}, {"week": 4, "q": "In Norman’s Model of Interaction the actions represent the ______ and sensory-motor activities of the user", "type": "single", "options": ["Cognitive", "Emotional", "Affective"], "answer": "Cognitive", "source_years": ["2022", "2025"]}, {"week": 4, "q": "Which is from the following is not valid categories of prototypes", "type": "single", "options": ["Horizontal", "Vertical", "Storyboard"], "answer": "Storyboard", "source_years": ["2022", "2025"]}, {"week": 4, "q": "Norman's Model of Interaction represents behavior of a user of interactive systems in terms of a series of ________.", "options": ["actions", "selection", "manipulation"], "answer": "actions", "source_years": ["2026"]}, {"week": 4, "q": "There are broadly two stages of interaction: execution stage and ______ stage.", "options": ["design", "evaluation", "interaction"], "answer": "evaluation", "source_years": ["2026"]}, {"week": 4, "q": "Perceive system state comes under the ______ stage of interaction.", "options": ["execution", "design", "evaluation", "interaction"], "answer": "evaluation", "source_years": ["2026"]}, {"week": 4, "q": "Actions we specify to translate intentions may not be supported by the interface leading to a gap (gulf) between the first three and the last actions in the execution stage. It is called ______.", "options": ["The gulf of execution", "The gulf of evaluation", "The gulf of Interaction"], "answer": "The gulf of execution", "source_years": ["2026"]}, {"week": 4, "q": "In a vertical prototype, the entire interface is depicted at the surface level without any functionality.", "options": ["True", "False"], "answer": "False", "source_years": ["2026"]}, {"week": 4, "q": "Paper mock-ups are the example of ______ prototype.", "options": ["Low fidelity", "High fidelity", "Medium fidelity"], "answer": "Low fidelity", "source_years": ["2026"]}, {"week": 4, "q": "There is a requirement of 3-5 member team for the cognitive walkthrough.", "options": ["True", "False"], "answer": "True", "source_years": ["2026"]}, {"week": 4, "q": "In a cognitive walkthrough evaluation, evaluators are expected to answer the questions only in 'yes' or 'no'.", "options": ["True", "False"], "answer": "False", "source_years": ["2026"]}, {"week": 4, "q": "In this technique, a human subject believes to interact with an autonomous computer. But, in reality, however, the computer is operated by an 'unseen' human being. This technique is called ______ approach.", "options": ["Medium fidelity", "Vertical", "Wizard of Oz", "Incremental"], "answer": "Wizard of Oz", "source_years": ["2026"]}, {"week": 5, "q": "How do we evaluate an interface?", "type": "single", "options": ["by evaluating satisfaction", "by evaluating memorability", "by evaluating usability"], "answer": "by evaluating usability", "source_years": ["2022", "2025"]}, {"week": 5, "q": "For expert evaluation, an evaluation team of 3-5 members is necessary.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 5, "q": "In a heuristic evaluation, the items in the checklist are called __________", "type": "single", "options": ["checkbox", "heuristics", "usability issues", "problems"], "answer": "heuristics", "source_years": ["2022", "2025"]}, {"week": 5, "q": "Data collected in evaluation with self-reports method is sometimes called _______ or preference data", "type": "single", "options": ["objective", "subjective", "self data", "automation"], "answer": "subjective", "source_years": ["2022", "2025"]}, {"week": 5, "q": "There are many ways of collecting user feedback in evaluation with self report methods: ______________ , can ask them to choose from a list of system attributes ask direct and open-ended questions.", "type": "single", "options": ["Utter the option", "Rating on a scale"], "answer": "Rating on a scale", "source_years": ["2022", "2025"]}, {"week": 5, "q": "ASQ is a ___________________.", "type": "single", "options": ["Post-task questionnaire", "Post-session questionnaire"], "answer": "Post-task questionnaire", "source_years": ["2022", "2025"]}, {"week": 5, "q": "It is generally assumed that an SUS score around _______ percent or higher is desirable", "type": "single", "options": ["10", "20", "50", "70"], "answer": "70", "source_years": ["2022", "2025"]}, {"week": 5, "q": "In heuristic evaluation, a system is evaluated with a checklist are called ____", "type": "single", "options": ["Heuristics", "Actions", "Statement"], "answer": "Heuristics", "source_years": ["2022", "2025"]}, {"week": 5, "q": "Nielsen, 1994 proposed _______ heuristics for expert evaluation", "type": "single", "options": ["5", "7", "9", "10"], "answer": "10", "source_years": ["2022", "2025"]}, {"week": 5, "q": "What is the full form of SUS", "type": "single", "options": ["Software usability score", "Software usability scale", "System usability score", "System usability scale"], "answer": "System usability scale", "source_years": ["2022", "2025"]}, {"week": 6, "q": "Which of the following is NOT a characteristic of Good design", "type": "single", "options": ["Coverage", "Correctness", "Understandability", "Colorful"], "answer": "Colorful", "source_years": ["2022", "2025"]}, {"week": 6, "q": "If all functions perform similar operations it falls under ________ cohesion.", "type": "single", "options": ["Logical", "Temporal", "Procedural", "Sequential"], "answer": "Logical", "source_years": ["2022", "2025"]}, {"week": 6, "q": "If two modules share code, it falls under __________ coupling.", "type": "single", "options": ["Data", "Control", "Content"], "answer": "Content", "source_years": ["2022", "2025"]}, {"week": 6, "q": "There are two basic design approaches: function oriented and _______ oriented.", "type": "single", "options": ["Logic", "Folder", "Object", "Class"], "answer": "Object", "source_years": ["2022", "2025"]}, {"week": 6, "q": "Basic components of ER diagram are: Entity, _____ and Relationship", "type": "single", "options": ["Object", "User", "Attribute", "Class"], "answer": "Attribute", "source_years": ["2022", "2025"]}, {"week": 6, "q": "In DFD data can flow from store to external entity.", "type": "single", "options": ["True", "False"], "answer": "False", "source_years": ["2022", "2025"]}, {"week": 6, "q": "Which of the following is/are the type of cohesion?", "type": "single", "options": ["Temporal", "Functional", "Content", "All of the above"], "answer": "Temporal", "source_years": ["2022", "2025"]}, {"week": 6, "q": "Which one from the following are related with between modules?", "type": "single", "options": ["Cohesion", "Coupling", "Both"], "answer": "Coupling", "source_years": ["2022"]}, {"week": 6, "q": "Data stores are first shown at", "type": "single", "options": ["Level 0 (context diagram)", "Level 1 (overview diagram)", "Level 1 (detailed diagram)"], "answer": "Level 1 (overview diagram)", "source_years": ["2022", "2025"]}, {"week": 6, "q": "ERD was proposed by Peter Chen in the year", "type": "single", "options": ["1967", "1986", "1976"], "answer": "1976", "source_years": ["2022", "2025"]}, {"week": 7, "q": "In functional design approach we think of the system as provider of a set of “services” represented as ________.", "type": "single", "options": ["Data", "Functions", "Objects"], "answer": "Functions", "source_years": ["2022", "2025"]}, {"week": 7, "q": "A class contains attributes and ___________.", "type": "single", "options": ["Data", "Operations", "Objects"], "answer": "Operations", "source_years": ["2022", "2025"]}, {"week": 7, "q": "Full form of OOA is:", "type": "single", "options": ["object oriented assignment", "object oriented assistance", "object oriented analysis", "object oriented attributes"], "answer": "object oriented analysis", "source_years": ["2022"]}, {"week": 7, "q": "UML is a language to represent", "type": "single", "options": ["OOP", "OOA", "OOD"], "answer": "OOD", "source_years": ["2022", "2025"]}, {"week": 7, "q": "Implementation view can be captured using ________.", "type": "single", "options": ["Deployment diagram", "Component diagram", "Class diagram", "Use case diagram"], "answer": "Component diagram", "source_years": ["2022", "2025"]}, {"week": 7, "q": "Once interface design stabilized and no further iteration required, we can focus on code design", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 7, "q": "In object oriented design approach, we think of system as a collection of “objects” and their ________", "type": "single", "options": ["behavior", "both"], "answer": "both", "source_years": ["2022", "2025"]}, {"week": 7, "q": "A operation can be", "type": "single", "options": ["private", "public", "both"], "answer": "both", "source_years": ["2022", "2025"]}, {"week": 7, "q": "UML supports ______________ views of a system", "type": "single", "options": ["3", "5", "7", "9"], "answer": "5", "source_years": ["2022", "2025"]}, {"week": 7, "q": "In UML diagram, structural view consists of ________ and _______", "type": "multi", "options": ["sequence diagram", "class diagram", "object diagram"], "answer": ["class diagram", "object diagram"], "source_years": ["2022", "2025"]}, {"week": 7, "q": "Full form of OOA is: object oriented assignment", "type": "single", "options": ["object oriented assistance", "object oriented analysis", "object oriented attributes"], "answer": "object oriented attributes", "source_years": ["2025"]}, {"week": 8, "q": "Following standard coding guidelines helps to improve ______.", "type": "single", "options": ["Readability only", "Understandability only", "Teamwork only", "Readability, understandability, and teamwork"], "answer": "Readability, understandability, and teamwork", "source_years": ["2022", "2025"]}, {"week": 8, "q": "A function should have no longer than _____ lines of code.", "type": "single", "options": ["5", "16", "10", "8"], "answer": "10", "source_years": ["2022", "2025"]}, {"week": 8, "q": "What are some things to avoid when writing code? (Choose all that apply)", "type": "single", "options": ["Using lengthy functions", "Using the same identifier for multiple purposes", "Using ‘goto’ (branching) statements indiscriminately", "Using proper indentation"], "answer": "Using lengthy functions", "source_years": ["2022", "2025"]}, {"week": 8, "q": "Two broad categories of code testing methods are review-based method and __________ method.", "type": "single", "options": ["Execution-based"], "answer": "Execution-based", "source_years": ["2022"]}, {"week": 8, "q": "What are the two common methods for review-based testing? (Choose all that apply)", "type": "single", "options": ["Code inspection", "Code walkthrough", "Unit testing"], "answer": "Code inspection", "source_years": ["2022", "2025"]}, {"week": 8, "q": "White-box testing refers to designing test cases using knowledge of internal structure of the software.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022"]}, {"week": 8, "q": "How many members should be present in a code walkthrough team?", "type": "single", "options": ["2–3 members", "3–5 members", "5–7 members", "7–10 members"], "answer": "3–5 members", "source_years": ["2022", "2025"]}, {"week": 8, "q": "Which of the following code testing method requires simulation of code execution by hand?", "type": "single", "options": ["Code walkthrough", "Code inspection", "Black box testing", "White box testing"], "answer": "Code walkthrough", "source_years": ["2022", "2025"]}, {"week": 8, "q": "Uninitialized variable is one of the common errors in programming that can be identified through code inspection", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 8, "q": "Which of the following is not required to perform black box testing?", "type": "single", "options": ["Equivalence class partitioning", "Boundary value analysis", "Test suite creation", "Knowledge of the internal structure of the code"], "answer": "Knowledge of the internal structure of the code", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Set of all test cases with which a given software is to be tested is known as ________.", "type": "single", "options": ["Testcase", "Test suite"], "answer": "Test suite", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Review based testing is good for early evaluation to ‘clean up’ the code before more rigorous and formal testing is done.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Randomly selected test cases do not necessarily contribute to significance of test suite.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 9, "q": "In black box testing the two main approaches to design test vases are: Equivalence class partitioning and _______________.", "type": "single", "options": ["Structural analysis", "Boundary value analysis", "Equivalence class analysis", "System analysis"], "answer": "Boundary value analysis", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Testing code with any _____ value(s) of an equivalence class is as good as testing with ALL input values belonging to that class.", "type": "single", "options": ["one", "two", "five", "four"], "answer": "one", "source_years": ["2022", "2025"]}, {"week": 9, "q": "In black box testing, domain of input values partitioned into sets, each sets are called _________.", "type": "single", "options": ["Equivalence class", "Program class"], "answer": "Program class", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Black box testing is a _____ testing.", "type": "single", "options": ["Functional testing", "Structural testing"], "answer": "Functional testing", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Execution based testing can also be called as formal program testing.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Which of the following is/are code testing method categories", "type": "single", "options": ["Review-based", "Execution-based", "Analysis-based"], "answer": "Review-based", "source_years": ["2022", "2025"]}, {"week": 9, "q": "Domain of input values partitioned into set is called equivalence class", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022"]}, {"week": 10, "q": "To do a white-box testing, knowledge of internal structure is required.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 10, "q": "To construct a CFG we assign numbers to all statements of the program, create a node in the CFG for each numbered statement and _______.", "type": "single", "options": ["Complement the CFG", "Add edges", "Sort the nodes"], "answer": "Add edges", "source_years": ["2022", "2025"]}, {"week": 10, "q": "In path coverage, test cases should ensure all __________ in the code executed at least once", "type": "single", "options": ["Linearly independent paths", "Linearly dependent paths"], "answer": "Linearly independent paths", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Three main stages of system testing is alpha testing, beta testing and _________.", "type": "single", "options": ["Gama testing", "Sigma testing", "Acceptance testing", "Omega testing"], "answer": "Acceptance testing", "source_years": ["2022", "2025"]}, {"week": 10, "q": "There are _____ stages of empirical research.", "type": "single", "options": ["Three", "Four", "Five", "Six"], "answer": "Four", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Data we get from observation is ________ data", "type": "single", "options": ["Reflective", "Empirical", "Authoritative", "Experiential"], "answer": "Empirical", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Node in a CFG for each numbered _________", "type": "single", "options": ["Line number", "End of parentheses", "Statement"], "answer": "Statement", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Each subsystem tested separately and then full system tested. This type of testing is known as", "type": "single", "options": ["Bottom-up testing", "Top-down"], "answer": "Bottom-up testing", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Stubs are used to simulate effect of ___________ routines called by the routines under test.", "type": "single", "options": ["lower-level", "upper-level"], "answer": "lower-level", "source_years": ["2022", "2025"]}, {"week": 10, "q": "Friendly customers are recruited for", "type": "single", "options": ["Alpha testing", "Beta testing", "Acceptance testing"], "answer": "Beta testing", "source_years": ["2022", "2025"]}, {"week": 11, "q": "When we perform a controlled experiment to collect and analyze data on user behavior, the entire process is known as _______.", "type": "single", "options": ["programmable research", "hypothetical research", "empirical research", "theoretical research"], "answer": "empirical research", "source_years": ["2022", "2025"]}, {"week": 11, "q": "There are broadly _____ stages of empirical research?", "type": "single", "options": ["Two", "three", "four", "five"], "answer": "four", "source_years": ["2022", "2025"]}, {"week": 11, "q": "RQ1: Is the new technique good? RQ2: Is our text input interface better than the text input interface provided by, say, MS Word? RQ3: Does the new interface let me enter text “faster” than MS Word? We call RQ3 ______ and RQ1 as _______.", "type": "single", "options": ["testable, non-testable", "alternative hypothesis, null hypothesis"], "answer": "testable, non-testable", "source_years": ["2022", "2025"]}, {"week": 11, "q": "When we form a hypothesis, essentially stating that the test condition is not going to affect the outcome (judgment). This hypothesis is called _______.", "type": "single", "options": ["null hypothesis", "alternative hypothesis"], "answer": "null hypothesis", "source_years": ["2022", "2025"]}, {"week": 11, "q": "In _______, we assign some (arbitrary) codes to attributes of observational data.", "type": "single", "options": ["nominal", "ordinal", "interval", "ratio"], "answer": "nominal", "source_years": ["2022", "2025"]}, {"week": 11, "q": "Recording data from a thermometer is an example of interval scaled data.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 11, "q": "_______ are variables that influence both the independent and dependent variables in a study, potentially leading to incorrect conclusions about the relationship between the two.", "type": "single", "options": ["Dependant variables", "Independent variables", "Confounding variables", "Control variables"], "answer": "Confounding variables", "source_years": ["2022", "2025"]}, {"week": 11, "q": "For any pilot study (or small-scale studies), 5 is probably a good number.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 11, "q": "To draw reliable conclusions from empirical data, we should use between _____ and _____ participants.", "type": "single", "options": ["2, 5", "12, 25", "10, 12"], "answer": "10, 12", "source_years": ["2022", "2025"]}, {"week": 11, "q": "When we distribute the tasks to participants in the way explained above, we call the study as _______.", "type": "single", "options": ["between-subject", "within-subject", "uni-subject", "center-subject"], "answer": "between-subject", "source_years": ["2022", "2025"]}, {"week": 12, "q": "With the significance test, we try to _______ the null hypothesis.", "type": "single", "options": ["Accept", "Refute"], "answer": "Refute", "source_years": ["2022", "2025"]}, {"week": 12, "q": "Type I error is also known as _______.", "type": "single", "options": ["False positive", "False negative", "True positive", "True negative"], "answer": "False positive", "source_years": ["2022", "2025"]}, {"week": 12, "q": "t-statistic is the ONLY way to test for statistical significance", "type": "single", "options": ["True", "False"], "answer": "False", "source_years": ["2022", "2025"]}, {"week": 12, "q": "There are broadly two categories of the techniques for significance test: _______ and _______.", "type": "single", "options": ["Parametric and Non-parametric", "t-test and non t-test"], "answer": "Parametric and Non-parametric", "source_years": ["2022", "2025"]}, {"week": 12, "q": "Project planning involves estimation of Project size, Cost, Duration and Effort.", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 12, "q": "COCOMO stands for _______.", "type": "single", "options": ["Conducive Cost Estimation Model", "Constructive Cost Estimation Model", "Constructive Category Estimation Model", "Conducive Category Estimation Model"], "answer": "Constructive Cost Estimation Model", "source_years": ["2022", "2025"]}, {"week": 12, "q": "According to Boehm, software cost estimation should be done through _______ stages.", "type": "single", "options": ["Two", "Three", "Four", "Five"], "answer": "Three", "source_years": ["2022", "2025"]}, {"week": 12, "q": "Agile development ensure quick turn-around of projects", "type": "single", "options": ["True", "False"], "answer": "True", "source_years": ["2022", "2025"]}, {"week": 12, "q": "Scrum is a _______ method.", "type": "single", "options": ["Traditional SDLC", "Agile"], "answer": "Agile", "source_years": ["2022", "2025"]}, {"week": 12, "q": "In a Gantt chart the length is proportional to _______ for activity", "type": "single", "options": ["Duration planned", "Effort", "Cost"], "answer": "Duration planned", "source_years": ["2022", "2025"]}];
+let selectedWeek = 1;
+let questions = [];
+
+function shuffle(a){
+  a=[...a];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function esc(s){
+  return String(s)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+function norm(s){
+  return String(s||"").trim().toLowerCase().replace(/\s+/g," ").replace(/[\u2018\u2019]/g,"'");
+}
+
+function buildWeekBar(){
+  const bar=document.getElementById("weekBar");
+  bar.innerHTML="";
+  for(let w=1;w<=12;w++){
+    const n=quizData.filter(x=>x.week===w).length;
+    const b=document.createElement("button");
+    b.className="week-btn"+(w===selectedWeek?" active":"");
+    b.textContent=`Week ${w} (${
+      n
+    })`;
+    b.onclick=()=>selectWeek(w);
+    bar.appendChild(b);
+  }
+}
+
+function selectWeek(w){
+  selectedWeek=w;
+  render();
+  buildWeekBar();
+  document.getElementById("scoreBox").textContent="Submit the quiz to see your score.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function render(){
+  questions=shuffle(quizData.filter(x=>x.week===selectedWeek));
+  const form=document.getElementById("quizForm");
+  form.innerHTML="";
+  const meta=document.getElementById("metaLine");
+  meta.textContent=`Week ${selectedWeek} • ${questions.length} unique questions • Question and option order is shuffled on reset.`;
+
+  questions.forEach((x,i)=>{
+    const card=document.createElement("div");
+    card.className="question-card";
+    const sources=x.source_years.map(y=>`<span class="badge source-badge">${y}</span>`).join("");
+    let input="";
+
+    if(x.type==="text"){
+      input=`<input class="text-answer" type="text" name="q${i}" placeholder="Type your answer here" autocomplete="off">`;
+    } else if(x.type==="multi"){
+      input=`<div class="options">${
+        shuffle(x.options).map(o=>`<label class="opt"><input type="checkbox" name="q${i}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")
+      }</div>`;
+    } else {
+      input=`<div class="options">${
+        shuffle(x.options).map(o=>`<label class="opt"><input type="radio" name="q${i}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")
+      }</div>`;
+    }
+
+    card.innerHTML=`
+      <div class="qtop">
+        <p class="qtitle">${i+1}) ${esc(x.q)}</p>
+        <div class="badges">
+          <span class="badge">Week ${x.week}</span>
+          ${sources}
+        </div>
+      </div>
+      ${input}
+      <div class="result" id="r${i}"></div>
+    `;
+    form.appendChild(card);
+  });
+}
+
+function sameMulti(a,b){
+  a=[...new Set(a.map(norm))].sort();
+  b=[...new Set(b.map(norm))].sort();
+  return a.length===b.length && a.every((v,i)=>v===b[i]);
+}
+
+function submitQuiz(){
+  let score=0,correct=0,wrong=0,blank=0;
+
+  questions.forEach((x,i)=>{
+    const r=document.getElementById(`r${i}`);
+    let answered=false,ok=false;
+
+    if(x.type==="text"){
+      const el=document.querySelector(`[name="q${i}"]`);
+      answered=!!el.value.trim();
+      ok=answered && norm(el.value)===norm(x.answer);
+    } else if(x.type==="multi"){
+      const vals=[...document.querySelectorAll(`input[name="q${i}"]:checked`)].map(e=>e.value);
+      answered=vals.length>0;
+      ok=answered && sameMulti(vals,x.answer);
+    } else {
+      const sel=document.querySelector(`input[name="q${i}"]:checked`);
+      answered=!!sel;
+      ok=answered && norm(sel.value)===norm(x.answer);
+    }
+
+    const ans=Array.isArray(x.answer)?x.answer.join(", "):x.answer;
+
+    if(!answered){
+      blank++;
+      r.textContent=`❌ Not Answered | Correct: ${ans}`;
+      r.className="result wrong";
+    } else if(ok){
+      score++; correct++;
+      r.textContent="✅ Correct";
+      r.className="result correct";
+    } else {
+      wrong++;
+      r.textContent=`❌ Wrong | Correct: ${ans}`;
+      r.className="result wrong";
+    }
+  });
+
+  document.getElementById("scoreBox").innerHTML=
+    `Week ${selectedWeek} Score: ${score} / ${questions.length}
+     <span class="scoredetails">Correct: ${correct} &nbsp;|&nbsp; Wrong: ${wrong} &nbsp;|&nbsp; Not Answered: ${blank}</span>`;
+
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+
+function resetQuiz(){
+  render();
+  document.getElementById("scoreBox").textContent="Submit the quiz to see your score.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+buildWeekBar();
+render();
+</script>
+</body>
+</html>
