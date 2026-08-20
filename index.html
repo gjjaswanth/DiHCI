@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Design and Implementation of Human Computer Interfaces Assignments</title>
+
+  <title>Design and Implementation of Human Computer Interface Assignments</title>
+
   <style>
     :root{
       --bg:#f4f6f8;
@@ -16,169 +18,324 @@
       --soft:#eef2ff;
       --softText:#3730a3;
     }
-    *{box-sizing:border-box}
+
+    *{
+      box-sizing:border-box;
+    }
+
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:Arial, Helvetica, sans-serif;
       background:var(--bg);
       color:var(--text);
     }
+
     .wrap{
       max-width:1200px;
       margin:0 auto;
       padding:28px 18px 48px;
     }
+
     header{
       text-align:center;
-      padding:18px 0 26px;
+      padding:18px 0 32px;
     }
+
     h1{
-      margin:0 0 10px;
+      margin:0 0 12px;
       font-size:clamp(30px,4vw,52px);
-      line-height:1.05;
+      line-height:1.1;
       color:#000;
       font-weight:800;
     }
+
     .subtitle{
       margin:0 auto;
-      max-width:820px;
+      max-width:850px;
       font-size:15px;
       color:var(--muted);
       line-height:1.6;
     }
+
     .section-label{
-      margin: 6px 0 14px;
+      margin:6px 0 16px;
       font-size:13px;
       text-transform:uppercase;
       letter-spacing:.14em;
       color:var(--muted);
       font-weight:700;
     }
+
+    /* All year cards */
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:18px;
+      grid-template-columns:repeat(3, 1fr);
+      gap:20px;
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--border);
       border-radius:18px;
       box-shadow:var(--shadow);
       padding:22px 20px 20px;
+
       display:flex;
       flex-direction:column;
-      min-height:220px;
+      min-height:250px;
+
+      transition:transform .2s ease,
+                 box-shadow .2s ease;
     }
+
+    .card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 14px 30px rgba(0,0,0,.09);
+    }
+
     .card.active{
       border-color:#dbe2ff;
-      background:linear-gradient(180deg,#ffffff 0%,#fbfcff 100%);
+      background:linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fbfcff 100%
+      );
     }
+
     .year{
       display:inline-flex;
       align-self:flex-start;
+
       background:var(--soft);
       color:var(--softText);
+
       border-radius:999px;
-      padding:7px 11px;
+      padding:7px 12px;
+
       font-size:12px;
       font-weight:800;
       letter-spacing:.04em;
-      margin-bottom:14px;
+
+      margin-bottom:16px;
     }
+
     .title{
       font-size:22px;
       line-height:1.35;
+
       margin:0 0 10px;
+
       font-weight:800;
       color:#111;
     }
+
     .desc{
-      margin:0 0 18px;
+      margin:0 0 20px;
+
       color:var(--muted);
       line-height:1.6;
       font-size:14px;
+
       flex:1;
     }
+
     .meta{
       font-size:13px;
       color:#374151;
-      margin:0 0 16px;
+
+      margin-bottom:16px;
+
       font-weight:700;
     }
-    a.btn, .btn-disabled{
+
+    a.btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
+
       width:100%;
       padding:13px 16px;
+
       border-radius:12px;
+
       text-decoration:none;
+
       font-size:15px;
       font-weight:800;
-      border:1px solid transparent;
-    }
-    a.btn{
+
       background:var(--accent);
       color:#fff;
+
+      transition:opacity .2s ease,
+                 transform .2s ease;
     }
-    a.btn:hover{opacity:.92}
-    .btn-disabled{
-      background:#e5e7eb;
-      color:#6b7280;
-      cursor:not-allowed;
+
+    a.btn:hover{
+      opacity:.92;
     }
+
     .footer-note{
-      margin-top:18px;
+      margin-top:28px;
+
       font-size:13px;
       color:var(--muted);
+
       text-align:center;
     }
-    @media (max-width:640px){
-      .card{min-height:unset}
+
+    /* Tablet */
+    @media(max-width:900px){
+
+      .grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
     }
+
+    /* Mobile */
+    @media(max-width:640px){
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .card{
+        min-height:unset;
+      }
+
+    }
+
   </style>
 </head>
+
 <body>
+
   <div class="wrap">
+
     <header>
-      <h1>Design and Implementation of Human Computer Interface Assignments</h1>
-      <p class="subtitle">Select a year to open the quiz set. The assignment quiz is ready and fully interactive. More year-based quizzes can be added here later with the same structure.</p>
+      <h1>
+        Design and Implementation of Human Computer Interface Assignments
+      </h1>
+
+      <p class="subtitle">
+        Select a year to open the quiz set. The assignment quizzes are ready
+        and fully interactive.
+      </p>
     </header>
 
-    <div class="section-label">Available quizzes</div>
+
+    <div class="section-label">
+      Available Quizzes
+    </div>
+
+
+    <!-- All cards inside ONE grid -->
+
     <div class="grid">
+
+
+      <!-- 2022 -->
+
       <div class="card active">
-        <div class="year">2022</div>
-        <div class="title">DiHCI Assignments</div>
-        <p class="desc">Week-wise MCQ practice set </p>
-        <div class="meta">132 questions</div>
-        <a class="btn" href="./2022-dihci-assignments.html">Open quiz</a>
+
+        <div class="year">
+          2022
+        </div>
+
+        <div class="title">
+          DiHCI Assignments
+        </div>
+
+        <p class="desc">
+          Week-wise MCQ practice set.
+        </p>
+
+        <div class="meta">
+          132 questions
+        </div>
+
+        <a class="btn"
+           href="./2022-dihci-assignments.html">
+
+          Open Quiz
+
+        </a>
+
       </div>
 
-      <div class="grid">
+
+      <!-- 2025 -->
+
       <div class="card active">
-        <div class="year">2022</div>
-        <div class="title">DiHCI Assignments</div>
-        <p class="desc">Week-wise MCQ practice set </p>
-        <div class="meta">132 questions</div>
-        <a class="btn" href="./2025-dihci-assignments.html">Open quiz</a>
+
+        <div class="year">
+          2025
+        </div>
+
+        <div class="title">
+          DiHCI Assignments
+        </div>
+
+        <p class="desc">
+          Week-wise MCQ practice set.
+        </p>
+
+        <div class="meta">
+          132 questions
+        </div>
+
+        <a class="btn"
+           href="./2025-dihci-assignments.html">
+
+          Open Quiz
+
+        </a>
+
       </div>
 
-       <div class="grid">
+
+      <!-- 2026 -->
+
       <div class="card active">
-        <div class="year">2022</div>
-        <div class="title">DiHCI Assignments</div>
-        <p class="desc">Week-wise MCQ practice set </p>
-        <div class="meta">132 questions</div>
-        <a class="btn" href="./2026-dihci-assignments.html">Open quiz</a>
+
+        <div class="year">
+          2026
+        </div>
+
+        <div class="title">
+          DiHCI Assignments
+        </div>
+
+        <p class="desc">
+          Week-wise MCQ practice set.
+        </p>
+
+        <div class="meta">
+          120 questions
+        </div>
+
+        <a class="btn"
+           href="./2026-dihci-assignments.html">
+
+          Open Quiz
+
+        </a>
+
       </div>
 
-  <div class="footer-note">
-
-        In case of any errors mail to
-        gj488@snu.edu.in
 
     </div>
+
+
+    <div class="footer-note">
+
+      In case of any errors mail to
+
+      gj488@snu.edu.in
+
+    </div>
+
   </div>
+
 </body>
 </html>
